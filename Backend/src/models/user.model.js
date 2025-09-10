@@ -1,4 +1,3 @@
-import { match } from "assert";
 import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
@@ -29,13 +28,14 @@ const userSchema = new Schema(
       unique: true,
       match: /^\d{10}$/,
     },
-    picture: {
+    profileImage: {
       type: String,
-      default: null,
+      default: "https://cdn-icons-png.flaticon.com/512/847/847969.png",
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      enum: ["user", "admin", "superadmin"],
+      default: "user",
     },
   },
   {
