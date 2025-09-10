@@ -37,6 +37,14 @@ const userSchema = new Schema(
       enum: ["user", "admin", "superadmin"],
       default: "user",
     },
+    bookings: {
+      type: Schema.Types.ObjectId,
+      ref: "Booking",
+    },
+    feedbacks: {
+      type: Schema.Types.ObjectId,
+      ref: "Feedback",
+    },
   },
   {
     timestamps: true,
