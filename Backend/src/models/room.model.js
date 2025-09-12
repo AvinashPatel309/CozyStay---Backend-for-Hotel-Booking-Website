@@ -29,9 +29,15 @@ const roomSchema = new Schema(
     amenities: {
       type: [String],
     },
-    isAvailable: {
-      type: Boolean,
-      default: true,
+    totalRooms: {
+      type: Number,
+      require: true,
+      min: 1,
+    },
+    availableRooms: {
+      type: Number,
+      require: true,
+      min: 0,
     },
 
     // roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
