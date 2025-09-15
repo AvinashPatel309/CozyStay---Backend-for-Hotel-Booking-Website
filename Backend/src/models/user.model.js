@@ -51,6 +51,9 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Feedback",
     },
+    refreshToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,
