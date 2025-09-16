@@ -223,4 +223,4 @@ const logoutUser = async (req, res) => {
     });
   }
 };
-export { registerUser, loginUser, refreshAccessToken };
+export { registerUser, loginUser, refreshAccessToken, logoutUser };
