@@ -1,6 +1,7 @@
 import { User } from "../models/User.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { uploadToCloudinary } from "../utils/cloudinary.utils.js";
 
 // User Registration
 
@@ -223,4 +224,151 @@ const logoutUser = async (req, res) => {
     });
   }
 };
-export { registerUser, loginUser, refreshAccessToken, logoutUser };
+
+const updateUserProfile = async (req, res) => {
+  try {
+    const { firstName, lastName, phoneNumber } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        firstName: firstName || req.user.firstName,
+        lastName: lastName || req.user.lastName,
+        phoneNumber: phoneNumber || req.user.phoneNumber,
+      },
+      { new: true }
+    ).select("-password -refreshToken");
+
+    res.status(200).json({
+      message: "User Profile updated successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while Updating User Profile",
+      error: error.message,
+    });
+  }
+};
+
+const updateUserProfileImage = async (req, res) => {
+  try {
+    const profileImageLocalPath = req.file?.path;
+
+    if (!profileImageLocalPath) {
+      return res.status(400).json({ message: "Profile Image is required" });
+    }
+
+    const profileImage = await uploadToCloudinary(profileImageLocalPath);
+
+    if (!profileImage) {
+      return res
+        .status(500)
+        .json({ message: "Failed to upload profile image" });
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        profileImage: profileImage.secure_url,
+      },
+      { new: true }
+    ).select("-password -refreshToken");
+
+    res.status(200).json({
+      message: "User Profile Image updated successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while Updating User Profile Image",
+      error: error.message,
+    });
+  }
+};
+
+const updateUserPassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const user = await User.findById(req.user._id).select("+password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid Old Password" });
+    }
+
+    user.password = newPassword; // Password will be hashed in the middleware
+    await user.save();
+    res.status(200).json({
+      message: "User Password updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while Updating User Password",
+      error: error.message,
+    });
+  }
+};
+
+const getUserDetails = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select(
+      "-password -refreshToken"
+    );
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      message: "User details fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while fetching User details",
+      error: error.message,
+    });
+  }
+};
+
+const deleteUserAccount = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.user._id);
+
+    const options = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // Set to true in production
+    };
+
+    res
+      .status(200)
+      .clearCookie("refreshToken", options)
+      .clearCookie("accessToken", options)
+      .json({
+        message: "User Account deleted successfully",
+      });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while Deleting User Account",
+      error: error.message,
+    });
+  }
+};
+export {
+  registerUser,
+  loginUser,
+  refreshAccessToken,
+  logoutUser,
+  updateUserProfile,
+  updateUserProfileImage,
+  updateUserPassword,
+  getUserDetails,
+  deleteUserAccount,
+};
