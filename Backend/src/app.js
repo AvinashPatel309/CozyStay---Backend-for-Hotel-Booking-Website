@@ -12,7 +12,7 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.user(express.static("public"));
+app.use(express.static("public"));
 app.use(cookieParser());
 
 // Import Routes
