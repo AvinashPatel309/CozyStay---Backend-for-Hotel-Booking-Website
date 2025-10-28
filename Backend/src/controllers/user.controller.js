@@ -10,9 +10,9 @@ const registerUser = async (req, res) => {
     const { firstName, lastName, email, password, phoneNumber } = req.body;
 
     //Check for missing fields
-    if (!firstName || !lastName || !email || !password || !phoneNumber) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+    // if (!firstName || !lastName || !email || !password || !phoneNumber) {
+    //   return res.status(400).json({ message: "All fields are required" });
+    // }
 
     // Check if user already exists
     const existingUser = await User.findOne({

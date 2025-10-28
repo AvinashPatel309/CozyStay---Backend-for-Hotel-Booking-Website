@@ -11,11 +11,16 @@ import {
   getUserDetails,
   deleteUserAccount,
 } from "../controllers/user.controller.js";
+import registrationValidator from "../validators/registration.validator.js";
+import { validateRequest } from "../middlewares/validateRequest.middleware.js";
+import { checkSchema } from "express-validator";
 
 const router = Router();
 
 // Register User
-router.route("/register").post(registerUser);
+router
+  .route("/register")
+  .post(checkSchema(registrationValidator), validateRequest, registerUser);
 // Login User
 router.route("/login").post(loginUser);
 //logout User
