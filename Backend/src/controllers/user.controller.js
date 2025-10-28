@@ -30,7 +30,7 @@ const registerUser = async (req, res) => {
       firstName,
       lastName,
       email: email.toLowerCase(),
-      password, // Password will be hashed in the middleware
+      password, // Password will be hashed via pre-save middleware
       phoneNumber,
     });
 
@@ -305,7 +305,7 @@ const updateUserPassword = async (req, res) => {
       return res.status(401).json({ message: "Invalid Old Password" });
     }
 
-    user.password = newPassword; // Password will be hashed in the middleware
+    user.password = newPassword; // Password will be hashed via pre-save middleware
     await user.save();
     res.status(200).json({
       message: "User Password updated successfully",
