@@ -95,9 +95,9 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     //Check for missing fields
-    if (!email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+    // if (!email || !password) {
+    //   return res.status(400).json({ message: "All fields are required" });
+    // }
 
     // Check if user exists
     const user = await User.findOne({ email: email.toLowerCase() });

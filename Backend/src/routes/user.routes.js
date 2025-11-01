@@ -11,7 +11,11 @@ import {
   getUserDetails,
   deleteUserAccount,
 } from "../controllers/user.controller.js";
+
+//Validators
 import registrationValidator from "../validators/registration.validator.js";
+import loginValidator from "../validators/login.validator.js";
+
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import { checkSchema } from "express-validator";
 
@@ -22,7 +26,9 @@ router
   .route("/register")
   .post(checkSchema(registrationValidator), validateRequest, registerUser);
 // Login User
-router.route("/login").post(loginUser);
+router
+  .route("/login")
+  .post(checkSchema(loginValidator), validateRequest, loginUser);
 //logout User
 router.route("/logout").post(verifyJWT, logoutUser);
 // Refresh Access Token
