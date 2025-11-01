@@ -9,3 +9,5 @@ const refreshAccessTokenValidator = {
     },
   },
 };
+
+export default refreshAccessTokenValidator;

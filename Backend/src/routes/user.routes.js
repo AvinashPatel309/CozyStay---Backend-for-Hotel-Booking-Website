@@ -16,6 +16,8 @@ import {
 import registrationValidator from "../validators/registration.validator.js";
 import loginValidator from "../validators/login.validator.js";
 import refreshAccessTokenValidator from "../validators/refreshAccessToken.validator.js";
+import updateUserProfileValidator from "../validators/updateUserProfile.validator.js";
+
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import { checkSchema } from "express-validator";
 
@@ -42,7 +44,14 @@ router
 // Get User Details
 router.route("/profile").get(verifyJWT, getUserDetails);
 // Update User Profile
-router.route("/profile").put(verifyJWT, updateUserProfile);
+router
+  .route("/profile")
+  .put(
+    checkSchema(updateUserProfileValidator),
+    validateRequest,
+    verifyJWT,
+    updateUserProfile
+  );
 // Update User Profile Image
 router.route("/profile/image").put(verifyJWT, updateUserProfileImage);
 // Update User Password

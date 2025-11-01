@@ -25,7 +25,7 @@ const registrationValidator = {
   phoneNumber: {
     in: ["body"],
     isLength: { options: { min: 10, max: 10 } },
-    isNumeric: true,
+    isString: true,
     errorMessage: "Phone number must be 10 digits long",
   },
 };
