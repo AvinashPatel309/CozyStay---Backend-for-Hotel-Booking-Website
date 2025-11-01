@@ -15,7 +15,7 @@ import {
 //Validators
 import registrationValidator from "../validators/registration.validator.js";
 import loginValidator from "../validators/login.validator.js";
-
+import refreshAccessTokenValidator from "../validators/refreshAccessToken.validator.js";
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import { checkSchema } from "express-validator";
 
@@ -32,7 +32,13 @@ router
 //logout User
 router.route("/logout").post(verifyJWT, logoutUser);
 // Refresh Access Token
-router.route("/refreshTokens").get(refreshAccessToken);
+router
+  .route("/refreshAccessTokens")
+  .get(
+    checkSchema(refreshAccessTokenValidator),
+    validateRequest,
+    refreshAccessToken
+  );
 // Get User Details
 router.route("/profile").get(verifyJWT, getUserDetails);
 // Update User Profile

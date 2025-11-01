@@ -144,11 +144,11 @@ const refreshAccessToken = async (req, res) => {
   try {
     const token = req.cookies?.refreshToken;
 
-    if (!token) {
-      return res
-        .status(401)
-        .json({ message: "No token provided Unauthorized request" });
-    }
+    // if (!token) {
+    //   return res
+    //     .status(401)
+    //     .json({ message: "No token provided Unauthorized request" });
+    // }
 
     const decodedToken = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
 
