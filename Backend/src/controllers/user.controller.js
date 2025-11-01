@@ -290,9 +290,9 @@ const updateUserPassword = async (req, res) => {
   try {
     const { oldPassword, newPassword } = req.body;
 
-    if (!oldPassword || !newPassword) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+    // if (!oldPassword || !newPassword) {
+    //   return res.status(400).json({ message: "All fields are required" });
+    // }
     const user = await User.findById(req.user._id).select("+password");
 
     if (!user) {

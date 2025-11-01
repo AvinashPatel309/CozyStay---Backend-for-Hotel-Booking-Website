@@ -17,6 +17,7 @@ import registrationValidator from "../validators/registration.validator.js";
 import loginValidator from "../validators/login.validator.js";
 import refreshAccessTokenValidator from "../validators/refreshAccessToken.validator.js";
 import updateUserProfileValidator from "../validators/updateUserProfile.validator.js";
+import updateUserPasswordValidator from "../validators/updateUserPassword.validator.js";
 
 import { validateRequest } from "../middlewares/validateRequest.middleware.js";
 import { checkSchema } from "express-validator";
@@ -55,7 +56,14 @@ router
 // Update User Profile Image
 router.route("/profile/image").put(verifyJWT, updateUserProfileImage);
 // Update User Password
-router.route("/profile/password").put(verifyJWT, updateUserPassword);
+router
+  .route("/profile/password")
+  .put(
+    checkSchema(updateUserPasswordValidator),
+    validateRequest,
+    verifyJWT,
+    updateUserPassword
+  );
 // Delete User Account
 router.route("/profile").delete(verifyJWT, deleteUserAccount);
 
