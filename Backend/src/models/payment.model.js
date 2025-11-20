@@ -5,22 +5,21 @@ const paymentSchema = new Schema(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      require: true,
+      required: true,
     },
     booking: {
       type: Schema.Types.ObjectId,
       ref: "Booking",
-      require: true,
+      required: true,
+      unique: true,
     },
     amount: {
       type: Number,
-      require: true,
+      required: true,
     },
     method: {
       type: String,
-      enum: ["credit card", "debit card", "paypal", "bank transfer"],
-      default: "debit card",
-      require: true,
+      required: true,
     },
     status: {
       type: String,
@@ -29,7 +28,7 @@ const paymentSchema = new Schema(
     },
     transactionId: {
       type: String,
-      require: true,
+      required: true,
     },
   },
   {

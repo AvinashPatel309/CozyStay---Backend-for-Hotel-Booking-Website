@@ -4,36 +4,36 @@ const hotelSchema = new Schema(
   {
     name: {
       type: String,
-      require: true,
+      required: true,
       min: 3,
-      max: 20,
+      max: 50,
     },
     type: {
       type: String,
-      require: true,
+      required: true,
       enum: ["hotel", "apartment", "resort", "villa", "cabin"],
     },
     desc: {
       type: String,
-      require: true,
+      required: true,
     },
     city: {
       type: String,
-      require: true,
+      required: true,
     },
     address: {
       type: String,
-      require: true,
+      required: true,
     },
     phone: {
       type: String,
-      require: true,
+      required: true,
       min: 10,
       match: /^\d{10}$/,
     },
     email: {
       type: String,
-      require: true,
+      required: true,
       trim: true,
       unique: true,
       lowercase: true,
@@ -45,19 +45,10 @@ const hotelSchema = new Schema(
     amenities: {
       type: [String],
     },
-    rooms: {
-      type: Schema.Types.ObjectId,
-      ref: "Room",
-      require: true,
-    },
-    feedback: {
-      type: Schema.Types.ObjectId,
-      ref: "Feedback",
-    },
     admin: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      require: true,
+      required: true,
     },
   },
   {

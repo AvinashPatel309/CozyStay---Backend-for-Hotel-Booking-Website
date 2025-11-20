@@ -5,17 +5,18 @@ const feedbackSchema = new Schema(
     booking: {
       type: Schema.Types.ObjectId,
       ref: "Booking",
-      require: true,
+      required: true,
+      unique: true,
     },
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      require: true,
+      required: true,
     },
     hotel: {
       type: Schema.Types.ObjectId,
       ref: "Hotel",
-      require: true,
+      required: true,
     },
     rating: {
       type: Number,
@@ -26,9 +27,6 @@ const feedbackSchema = new Schema(
       type: String,
       min: 5,
       max: 500,
-    },
-    images: {
-      type: [String],
     },
   },
   {

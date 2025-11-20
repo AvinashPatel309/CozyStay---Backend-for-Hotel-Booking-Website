@@ -5,42 +5,31 @@ const roomSchema = new Schema(
     hotel: {
       type: Schema.Types.ObjectId,
       ref: "Hotel",
-      require: true,
+      required: true,
     },
     type: {
       type: String,
-      require: true,
+      required: true,
     },
     price: {
       type: Number,
-      require: true,
+      required: true,
     },
     images: {
       type: [String],
     },
     capacity: {
       type: Number,
-      require: true,
+      required: true,
     },
     desc: {
       type: String,
-      require: true,
+      required: true,
     },
     amenities: {
       type: [String],
     },
-    totalRooms: {
-      type: Number,
-      require: true,
-      min: 1,
-    },
-    availableRooms: {
-      type: Number,
-      require: true,
-      min: 0,
-    },
-
-    // roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
+    roomNumbers: [{ number: Number, unavailableDates: { type: [Date] } }],
   },
   {
     timestamps: true,

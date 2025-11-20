@@ -1,39 +1,33 @@
 import mongoose, { Schema } from "mongoose";
-import { type } from "os";
 
 const bookingSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      require: true,
+      required: true,
     },
     hotel: {
       type: Schema.Types.ObjectId,
       ref: "Hotel",
-      require: true,
+      required: true,
     },
     room: {
       type: Schema.Types.ObjectId,
       ref: "Room",
-      require: true,
-    },
-    payment: {
-      type: Schema.Types.ObjectId,
-      ref: "Payment",
-      require: true,
+      required: true,
     },
     checkInDate: {
       type: Date,
-      require: true,
+      required: true,
     },
     checkOutDate: {
       type: Date,
-      require: true,
+      required: true,
     },
     totalPrice: {
       type: Number,
-      require: true,
+      required: true,
     },
     status: {
       type: String,
@@ -42,7 +36,7 @@ const bookingSchema = new Schema(
     },
     guestsNumber: {
       type: Number,
-      require: true,
+      required: true,
     },
   },
   {

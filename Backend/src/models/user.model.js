@@ -5,19 +5,19 @@ const userSchema = new Schema(
   {
     firstName: {
       type: String,
-      require: true,
-      min: 3,
+      required: true,
+      min: 2,
       max: 20,
     },
     lastName: {
       type: String,
-      require: true,
-      min: 3,
+      required: true,
+      min: 2,
       max: 20,
     },
     email: {
       type: String,
-      require: true,
+      required: true,
       trim: true,
       unique: true,
       lowercase: true,
@@ -25,12 +25,12 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      require: true,
+      required: true,
       min: 6,
     },
     phoneNumber: {
       type: String,
-      require: true,
+      required: true,
       min: 10,
       unique: true,
       match: /^\d{10}$/,
@@ -43,14 +43,6 @@ const userSchema = new Schema(
       type: String,
       enum: ["user", "admin", "superadmin"],
       default: "user",
-    },
-    bookings: {
-      type: Schema.Types.ObjectId,
-      ref: "Booking",
-    },
-    feedbacks: {
-      type: Schema.Types.ObjectId,
-      ref: "Feedback",
     },
     refreshToken: {
       type: String,
