@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { upload } from "../middlewares/multer.middlerware.js";
 import {
   registerUser,
   loginUser,
@@ -54,7 +55,9 @@ router
     updateUserProfile
   );
 // Update User Profile Image
-router.route("/profile/image").put(verifyJWT, updateUserProfileImage);
+router
+  .route("/profile/image")
+  .put(verifyJWT, upload.single("profileImage"), updateUserProfileImage);
 // Update User Password
 router
   .route("/profile/password")
