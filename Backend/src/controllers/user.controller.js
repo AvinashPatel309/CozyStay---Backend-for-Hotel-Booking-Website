@@ -7,7 +7,8 @@ import { uploadToCloudinary } from "../utils/cloudinary.utils.js";
 
 const registerUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phoneNumber } = req.body;
+    const { firstName, lastName, email, password, phoneNumber, isAdmin } =
+      req.body;
 
     //Check for missing fields
     // if (!firstName || !lastName || !email || !password || !phoneNumber) {
@@ -25,6 +26,11 @@ const registerUser = async (req, res) => {
       });
     }
 
+    let role = "user";
+    if (isAdmin) {
+      role = "admin";
+    }
+
     // Create new user
     const user = await User.create({
       firstName,
@@ -32,6 +38,7 @@ const registerUser = async (req, res) => {
       email: email.toLowerCase(),
       password, // Password will be hashed via pre-save middleware
       phoneNumber,
+      role: role || "user",
     });
 
     const createdUser = await User.findById(user._id).select(

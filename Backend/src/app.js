@@ -18,11 +18,14 @@ app.use(cookieParser());
 // Import Routes
 import userRouter from "./routes/user.routes.js";
 import hotelRouter from "./routes/hotel.routes.js";
+import adminRouter from "./routes/admin.routes.js";
 
 // Use Routes
 app.use("/api/v1/hotel", hotelRouter);
 
 // Use Routes
 app.use("/api/v1/user", userRouter);
+
+app.use("/api/v1/admin", adminRouter);
 
 export { app };

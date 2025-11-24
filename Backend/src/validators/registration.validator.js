@@ -28,6 +28,12 @@ const registrationValidator = {
     isString: true,
     errorMessage: "Phone number must be 10 digits long",
   },
+  isAdmin: {
+    in: ["body"],
+    optional: true,
+    isBoolean: true,
+    errorMessage: "isAdmin must be a boolean value",
+  },
 };
 
 export default registrationValidator;
