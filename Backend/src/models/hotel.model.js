@@ -28,6 +28,7 @@ const hotelSchema = new Schema(
     phone: {
       type: String,
       required: true,
+      unique: true,
       min: 10,
       match: /^\d{10}$/,
     },
