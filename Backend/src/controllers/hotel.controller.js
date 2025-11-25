@@ -69,4 +69,32 @@ const createHotel = async (req, res) => {
   }
 };
 
-export { createHotel };
+const getAllHotels = async (req, res) => {
+  const hotels = await Hotel.find().select("-admin");
+  res.status(200).json({
+    message: "All Hotels fetched successfully",
+    data: hotels,
+  });
+};
+
+const getMyHotel = async (req, res) => {
+  const hotels = await Hotel.find({ admin: req.user._id });
+  res.status(200).json({
+    message: "My Hotel fetched successfully",
+    data: hotels,
+  });
+};
+
+const getHotelById = async (req, res) => {
+  const { hotelId } = req.params;
+  const hotel = await Hotel.findById(hotelId).select("-admin");
+  if (!hotel) {
+    return res.status(404).json({ message: "Hotel not found" });
+  }
+  res.status(200).json({
+    message: "Hotel fetched successfully",
+    data: hotel,
+  });
+};
+
+export { createHotel, getAllHotels, getMyHotel, getHotelById };
