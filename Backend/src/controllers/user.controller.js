@@ -368,6 +368,53 @@ const deleteUserAccount = async (req, res) => {
     });
   }
 };
+
+const getAllUsers = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find({ role: "user" })
+      .skip(skip)
+      .limit(limit)
+      .select("-password -refreshToken");
+
+    const totalUsers = await User.countDocuments({ role: "user" });
+    const totalPages = Math.ceil(totalUsers / limit);
+    res.status(200).json({
+      message: "All Users fetched successfully",
+      data: users,
+      currentPage: page,
+      totalPages: totalPages,
+      totalUsers: totalUsers,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while fetching all users",
+      error: error.message,
+    });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId).select("-password -refreshToken");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      message: "User fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while fetching User",
+      error: error.message,
+    });
+  }
+};
 export {
   registerUser,
   loginUser,
@@ -378,4 +425,5 @@ export {
   updateUserPassword,
   getUserDetails,
   deleteUserAccount,
+  getAllUsers,
 };

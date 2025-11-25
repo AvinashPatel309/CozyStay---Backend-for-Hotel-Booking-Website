@@ -69,32 +69,65 @@ const createHotel = async (req, res) => {
   }
 };
 
+//get All Hotels with pagination
 const getAllHotels = async (req, res) => {
-  const hotels = await Hotel.find().select("-admin");
-  res.status(200).json({
-    message: "All Hotels fetched successfully",
-    data: hotels,
-  });
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const hotels = await Hotel.find().skip(skip).limit(limit).select("-admin");
+
+    const totalHotels = await Hotel.countDocuments();
+    const totalPages = Math.ceil(totalHotels / limit);
+
+    res.status(200).json({
+      message: "All Hotels fetched successfully",
+      data: hotels,
+      currentPage: page,
+      totalPages: totalPages,
+      totalHotels: totalHotels,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while fetching All Hotels",
+      error: error.message,
+    });
+  }
 };
 
 const getMyHotel = async (req, res) => {
-  const hotels = await Hotel.find({ admin: req.user._id });
-  res.status(200).json({
-    message: "My Hotel fetched successfully",
-    data: hotels,
-  });
+  try {
+    const hotels = await Hotel.find({ admin: req.user._id });
+    res.status(200).json({
+      message: "My Hotel fetched successfully",
+      data: hotels,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while fetching My Hotel",
+      error: error.message,
+    });
+  }
 };
 
 const getHotelById = async (req, res) => {
-  const { hotelId } = req.params;
-  const hotel = await Hotel.findById(hotelId).select("-admin");
-  if (!hotel) {
-    return res.status(404).json({ message: "Hotel not found" });
+  try {
+    const { hotelId } = req.params;
+    const hotel = await Hotel.findById(hotelId).select("-admin");
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+    res.status(200).json({
+      message: "Hotel fetched successfully",
+      data: hotel,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong while fetching Hotel",
+      error: error.message,
+    });
   }
-  res.status(200).json({
-    message: "Hotel fetched successfully",
-    data: hotel,
-  });
 };
 
 export { createHotel, getAllHotels, getMyHotel, getHotelById };

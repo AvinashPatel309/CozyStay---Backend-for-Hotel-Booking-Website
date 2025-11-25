@@ -11,6 +11,7 @@ import {
   updateUserPassword,
   getUserDetails,
   deleteUserAccount,
+  getAllUsers,
 } from "../controllers/user.controller.js";
 
 //Validators
@@ -69,5 +70,8 @@ router
   );
 // Delete User Account
 router.route("/profile").delete(verifyJWT, deleteUserAccount);
+
+// Get All Users (Admin Only)
+router.route("/").get(verifyJWT, getAllUsers);
 
 export default router;
